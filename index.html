@@ -38,7 +38,7 @@
 </script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vjenčanje Bekira i Majde</title>
+<title>Vjenčanje Bilala i Merine</title>
 <link rel="icon" type="image/png" href="./Images/M&BLogo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
@@ -1241,7 +1241,7 @@ body.loader-active {
 <div id="desktopWarning">
   <div class="dw-inner">
     <img src="./Images/ringsWatercolor.png" style="width:13rem;height:auto;margin-bottom:16px;" />
-    <p class="dw-title">Bekir <span>&amp;</span> Majda</p>
+    <p class="dw-title">Bilal <span>&amp;</span> Merina</p>
     <p class="dw-sub">Molimo otvorite pozivnicu na svom telefonu.</p>
   </div>
 </div>
@@ -1270,7 +1270,7 @@ body.loader-active {
     <svg class="pl-heart" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <path class="pl-heart-draw" d="M50 75 C50 75 15 52 15 30 C15 19 24 12 33 12 C40 12 46 16 50 22 C54 16 60 12 67 12 C76 12 85 19 85 30 C85 52 50 75 50 75Z"/>
     </svg>
-    <p class="pl-names">Bekir <span>&amp;</span> Majda</p>
+    <p class="pl-names">Bilal <span>&amp;</span> Merina</p>
     <p class="pl-date">11 · 09 · 2026</p>
   </div>
 </div>
@@ -1293,7 +1293,7 @@ body.loader-active {
 
   <div class="hero-content">
     <p class="hero-small">Naš veliki dan se bliži</p>
-    <h1 class="hero-title">Bekir <span class="hero-amp">&amp;</span> Majda</h1>
+    <h1 class="hero-title">Bilal <span class="hero-amp">&amp;</span> Merina</h1>
   </div>
 
   <div class="hero-date-holder">
@@ -1346,11 +1346,11 @@ body.loader-active {
 
   <div class="polaroid-stage" id="polaroidStage">
     <div class="polaroid-card" id="cardLeft">
-      <div class="photo"><img src="./Images/image1.jpeg" alt="Bekir & Majda"></div>
+      <div class="photo"><img src="./Images/image1.jpeg" alt="Bilal & Merina"></div>
       <p class="caption">Zauvijek zajedno</p>
     </div>
     <div class="polaroid-card" id="cardRight">
-      <div class="photo"><img src="./Images/images.jpg" alt="Bekir & Majda"></div>
+      <div class="photo"><img src="./Images/images.jpg" alt="Bilal & Merina"></div>
       <p class="caption">Naša ljubavna priča</p>
     </div>
   </div>
@@ -1486,7 +1486,7 @@ Sada želimo da zajedno s vama proslavimo početak našeg zauvijek.</p>
         </div>
         <div class="blog-text">
           <p class="blog-date">11. sep 2026.</p>
-          <h3 class="blog-title">Bekir & Majda <br style="display:none;"/> Proslava ljubavi</h3>
+          <h3 class="blog-title">Bilal & Merina <br style="display:none;"/> Proslava ljubavi</h3>
           <p class="blog-excerpt">Od iskrenih zavjeta do radosnih suza, svaki trenutak ovog posebnog dana priča priču o ljubavi. Kompletna foto galerija bit će dostupna nekoliko dana nakon vjenčanja — hvala vam na strpljenju dok pripremamo ove uspomene za vas.</p>
           <span class="blog-read-more">Pogledaj fotografije</span>
         </div>
@@ -1554,8 +1554,11 @@ Sada želimo da zajedno s vama proslavimo početak našeg zauvijek.</p>
     bar.style.width = '100%';
     setTimeout(() => loader.classList.add('hidden'), 400);
   }
-  if (document.readyState === 'complete') { finishLoader(); }
-  else { window.addEventListener('load', finishLoader); }
+  var done = false;
+  function once() { if (done) return; done = true; finishLoader(); }
+  if (document.readyState === 'interactive' || document.readyState === 'complete') { setTimeout(once, 300); }
+  else { document.addEventListener('DOMContentLoaded', function () { setTimeout(once, 300); }); }
+  setTimeout(once, 1200);
 })();
 
 document.body.classList.add('loader-active');
@@ -1622,6 +1625,15 @@ loader.addEventListener('click', () => {
     }, 3200);
   }).catch(() => {});
 
+  let envDone = false;
+  const closeEnvelope = () => {
+    if (envDone) return; envDone = true;
+    loader.style.transition = 'opacity 0.6s ease';
+    loader.style.opacity = '0';
+    setTimeout(() => { loader.remove(); document.body.classList.remove('loader-active'); }, 600);
+  };
+  setTimeout(() => { if (!video.currentTime) closeEnvelope(); }, 1500);
+
   video.addEventListener('playing', () => {
     video.style.transition = 'opacity 0.6s ease';
     video.style.opacity    = '1';
@@ -1632,6 +1644,7 @@ loader.addEventListener('click', () => {
       video.style.filter     = 'blur(20px)';
     }, 2000);
     setTimeout(() => {
+      envDone = true;
       loader.remove();
       document.body.classList.remove('loader-active');
     }, 3200);
