@@ -1567,7 +1567,7 @@ Sada želimo da zajedno s vama proslavimo početak našeg zauvijek.</p>
     new Promise(res => setTimeout(res, 1000))
   ]);
   Promise.all([imgReady, fontsReady]).then(finishLoader);
-  setTimeout(finishLoader, 2500); // sigurnosni limit
+  setTimeout(finishLoader, 4000); // sigurnosni limit
 })();
 
 document.body.classList.add('loader-active');
@@ -1684,7 +1684,7 @@ loader.addEventListener('click', () => {
   // Ako se video ne pokrene (spor internet, štednja baterije, greška) — svejedno otvori pozivnicu
   video.addEventListener('error', () => closeLoader(true), { once: true });
   video.play().catch(() => closeLoader(true));
-  setTimeout(() => { if (!started) closeLoader(true); }, 2500);
+  setTimeout(() => { if (!started) closeLoader(true); }, 7000);
 });
 
 (function() {
@@ -1786,6 +1786,29 @@ function toggleFAQ(el) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!was) el.classList.add('open');
 }
+</script>
+<script id="_spinfix">
+(function(){
+  var tap = document.getElementById('envelopeLoader') || document.getElementById('splash-image');
+  var vid = document.getElementById('envelopeVideo') || document.getElementById('splash-video');
+  if (!tap || !vid) return;
+  var sp = null;
+  function removeSp(){ if (sp && sp.parentNode) sp.parentNode.removeChild(sp); sp = null; }
+  tap.addEventListener('click', function(){
+    // ako se video ne pokrene odmah, pokaži mali krug učitavanja umjesto "mrtvog" ekrana
+    setTimeout(function(){
+      if (vid.currentTime > 0 && !vid.paused) return;
+      var st = document.createElement('style');
+      st.textContent = '@keyframes _sp{to{transform:rotate(360deg)}}';
+      document.head.appendChild(st);
+      sp = document.createElement('div');
+      sp.style.cssText = 'position:fixed;left:50%;bottom:14%;width:34px;height:34px;margin-left:-17px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:_sp .8s linear infinite;z-index:2147483000;pointer-events:none;';
+      document.body.appendChild(sp);
+      vid.addEventListener('playing', removeSp, { once: true });
+      setTimeout(removeSp, 7050);
+    }, 350);
+  }, { once: true });
+})();
 </script>
 </body>
 </html>
